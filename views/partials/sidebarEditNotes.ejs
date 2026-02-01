@@ -1,0 +1,44 @@
+<aside class="w-64 bg-teal-700 text-white p-6 hidden md:flex flex-col">
+
+        <h1 class="text-3xl font-bold mb-6">Smart Notes</h1>
+
+        <!-- All Notes Link -->
+        <a href="/dashboard" class="block px-3 py-2 mb-4 rounded bg-white/10 hover:bg-white/20 text-xl font-medium">
+            All Notes
+        </a>
+
+        <!-- Notes List -->
+        <p class="text-xs uppercase tracking-wide text-slate-400 mb-2">Your Notes</p>
+        <div class="space-y-1 text-sm">
+            <% if (typeof notes!= "undefined" && notes.length > 0) { %>
+                <% notes.forEach(n => { %>
+                    <a href="/notes/<%= n._id %>"
+                        class="block px-3 py-2 rounded 
+                        <%= (typeof currentNote !== 'undefined' && currentNote._id === n._id) 
+                            ? 'bg-white/20' 
+                            : 'hover:bg-white/10' %>">
+                            <%= n.title || "Untitled" %>
+                    </a>
+                <% }) %>
+            <% } else { %>
+                <p class="text-xs text-slate-400">No notes yet</p>
+            <% } %>
+        </div>
+
+        <!-- Tags -->
+        <div class="mt-6">
+            <p class="text-sm uppercase tracking-wide text-slate-400 mb-2">Tags</p>
+            <div class="flex flex-wrap gap-2">
+                <% if (typeof tags != "undefined" && tags.length > 0) { %>
+                    <% tags.forEach(tag => { %>
+                        <span class="px-2 py-1 text-xs bg-teal-700/30 rounded-full">
+                            <%= tag %>
+                        </span>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+
+        
+
+    </aside>

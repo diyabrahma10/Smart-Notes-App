@@ -1,0 +1,20 @@
+<% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="mt-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
+        <ul class="list-disc list-inside space-y-1">
+            <% errors.forEach(err => { %>
+                <li><%= err %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+
+<!-- Flash error messages (redirect) -->
+<% if (flashErrors && flashErrors.length > 0) { %>
+<div class="bg-red-50 border border-red-200 text-red-700 p-3 rounded mb-4">
+    <ul class="list-disc list-inside text-sm">
+    <% flashErrors.forEach(err => { %>
+        <li><%= err %></li>
+    <% }) %>
+    </ul>
+</div>
+<% } %>

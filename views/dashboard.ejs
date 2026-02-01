@@ -1,0 +1,22 @@
+<%- include('partials/header', { title: 'Smart Notes | Dashboard' }) %>
+
+<div class="min-h-screen flex bg-gray-100">
+
+    <!-- Sidebar -->
+    <%- include( 'partials/sidebarAllNotes') %>
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+
+        <!-- Top Navbar -->
+        <%- include("partials/topNavbar") %>
+        <!-- Notes Grid -->
+        <%- include('notesGrid.ejs') %>
+
+    </div>
+    
+</div>
+
+<!-- Dropdown Script -->
+    <%- include('partials/dropdownScript') %>
+
+<%- include('partials/footer') %>

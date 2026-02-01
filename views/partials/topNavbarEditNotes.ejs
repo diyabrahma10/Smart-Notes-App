@@ -1,0 +1,39 @@
+<header class="bg-white border-b px-6 py-3 flex items-center justify-between">
+
+            <!-- Title -->
+            <input 
+                type="text" 
+                placeholder="Untitled Note"
+                value="<%= (typeof currentNote !== 'undefined' && currentNote.title) ? currentNote.title : '' %>"
+                class="text-2xl font-bold border-none outline-none bg-transparent w-full max-w-xl"
+            />
+
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4">
+
+                <button class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    Save
+                </button>
+
+                <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    Delete
+                </button>
+
+                <!-- Profile -->
+                 <%- include('profileSection') %>
+                <!-- <div class="relative flex items-center gap-2 cursor-pointer" id="profileBtn">
+                    <span class="text-sm font-medium text-gray-700">< %user?.firstName || "User" %></span>
+                    <img src="/images/avatar.png" class="w-9 h-9 rounded-full border"> -->
+
+                    <!-- Dropdown -->
+                    <!-- <div id="profileMenu" class="hidden absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg border text-sm">
+                        <a href="/profile" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+                        <a href="/settings" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                        <a href="/logout" class="block px-4 py-2 text-red-600 hover:bg-red-50">Logout</a>
+                    </div>
+                </div> --> 
+
+            </div>
+
+        </header>

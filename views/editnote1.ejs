@@ -1,0 +1,76 @@
+<%- include('partials/header', { title: 'Smart Notes | Editor' }) %>
+
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<div class="min-h-screen flex bg-gray-100">
+
+    <!-- Sidebar -->
+    <%- include('partials/sidebarEditNotes') %>
+
+    <!-- Main Section -->
+    <div class="flex-1 flex flex-col">
+
+        <!-- Top Navbar -->
+        <%- include('partials/topNavbarEditNotes', {currentNote : {
+            title : "hello guys"
+        }}) %>
+
+        <!-- Editor Area -->
+        <main class="p-6 flex-1">
+
+            <!-- Quill Editor -->
+            <div id="editor" class="bg-white rounded-lg shadow p-2 h-112.5"></div>
+
+           
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- Quill JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<script>
+    const quill = new Quill('#editor', {
+        theme: 'snow',
+        placeholder: '  Start Here...',
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ align: [] }],
+                ['link', 'code-block'],
+                ['clean']
+            ]
+        }
+    });
+
+    // Load existing note content (if editing)
+    // if (typeof currentNote !="undefined" && currentNote.contentHTML) {
+    //     quill.root.innerHTML = `< %- currentNote.contentHTML %>`;
+    // } 
+
+    // Store HTML and Plain Text
+    quill.on('text-change', function() {
+        document.getElementById("noteHTML").value = quill.root.innerHTML;
+        document.getElementById("noteText").value = quill.getText();
+    });
+
+    // Profile dropdown
+    const btn = document.getElementById("profileBtn");
+    const menu = document.getElementById("profileMenu");
+
+    btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", () => {
+        menu.classList.add("hidden");
+    });
+</script>
+
+<%- include('partials/footer') %>

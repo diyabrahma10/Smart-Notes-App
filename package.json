@@ -1,0 +1,31 @@
+{
+  "name": "smartnotesapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --env-file=.env --watch server.js",
+    "design": "npx @tailwindcss/cli -i ./public/input.css -o ./public/output.css --watch",
+    "db-migrate": "npx prisma migrate dev --name init"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "@tailwindcss/cli": "^4.1.18",
+    "bcrypt": "^6.0.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.3",
+    "prisma": "^6.19.2",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.6"
+  }
+}

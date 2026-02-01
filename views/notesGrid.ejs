@@ -1,0 +1,33 @@
+<main class="p-6">
+
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <% if (typeof notes !== "undefined" && notes.length > 0) { %>
+
+            <% notes.forEach(note => { %>
+                <div class="bg-white rounded-xl p-5 shadow hover:shadow-md transition">
+                    <h3 class="font-semibold text-gray-800 mb-2"><%= note.title %></h3>
+
+                    <p class="text-sm text-gray-600 line-clamp-3 mb-4">
+                        <%= note.content %>
+                    </p>
+
+                    <div class="text-xs text-gray-400 mb-3">
+                        <%= note.createdAt %>
+                    </div>
+
+                    <div class="flex gap-2 flex-wrap">
+                        <% note.tags.forEach(tag => { %>
+                            <span class="px-2 py-1 text-xs rounded-full bg-teal-100 text-teal-700">
+                                <%= tag %>
+                            </span>
+                        <% }) %>
+                    </div>
+                </div>
+            <% }) %>
+
+        <% } %>
+
+    </section>
+
+</main>
