@@ -4,6 +4,9 @@ import { loginUserSchema } from "../validators/user.schema.js";
 
 
 export const getLoginPage = (req, res)=> {
+    if(req.user){
+        return res.redirect('/dashboard');
+    }
     return res.render('login');
 
 }
@@ -75,11 +78,34 @@ export const postLogin = async(req, res) => {
 }
 
 export const getLogout = async(req, res) => {
-    const refreshToken = req.cookies.refreshToken;
-    const payload = verifyRefreshToken(refreshToken);
+    try {
+        const refreshToken = req.cookies.refreshToken;
 
-    await deleteSession(payload.sessionId);
-    req.flash('success', 'Login to proceed');
-    res.redirect('/login');
+        if (refreshToken) {
+            try {
+                const payload = verifyRefreshToken(refreshToken);
+
+                if (payload?.sessionId) {
+                    await deleteSession(payload.sessionId);
+                }
+            } catch (err) {
+                // invalid / expired refresh token
+                // DO NOTHING — user is already logged out
+            }
+        }
+
+        // Always clear cookies
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+
+        req.flash("success", "Logged out successfully");
+        return res.redirect("/login");
+
+    } catch (err) {
+        // Absolute fallback
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+        return res.redirect("/login");
+    }
 
 }

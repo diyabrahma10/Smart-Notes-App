@@ -3,6 +3,9 @@ import {createUser, findUserByEmail, hashPassword} from "../services/user.servic
 import { registerUserSchema } from "../validators/user.schema.js";
 
 export const getRegisterPage = (req, res) => {
+    if(req.user){
+        return res.redirect('/dashboard');
+    }
     return res.render('register', {
         values:{},
     });

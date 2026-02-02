@@ -35,3 +35,16 @@ export const verifyRefreshToken = (refreshToken) => {
   return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 }
 
+export const findSessionById = async(session_id) => {
+    return await prisma.sessions.findFirst({
+      where: {
+        id: session_id,
+        
+      },
+      include: {
+        user: true,
+      },
+    });
+}
+
+

@@ -6,6 +6,7 @@ import flash from "connect-flash";
 import { loginRouter } from "./routers/auth.routes/login.route.js";
 import cookieParser from "cookie-parser";
 import { dashRouter } from "./routers/dashboard.route.js";
+import { assignUser, requireAuth } from "./middlewares/authenticate.middleware.js";
 
 
 
@@ -34,9 +35,11 @@ app.use((req, res, next) => {
     res.locals.errorr= [];
     res.locals.success=[];
     res.locals.user = null;
-    res.locals.urls = [];
+  
     next();
 })
+
+app.use(assignUser);
 
 app.get("/", (req, res) => {
     res.redirect('/register');
@@ -44,7 +47,7 @@ app.get("/", (req, res) => {
 
 app.use('/', registerRouter);
 app.use('/', loginRouter);
-app.use('/dashboard', dashRouter);
+app.use('/dashboard',requireAuth, dashRouter);
 
 app.listen(3000, () => {
     console.log(`Server running on http://localhost:${3000}`);
