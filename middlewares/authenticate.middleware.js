@@ -15,16 +15,15 @@ export const assignUser = async (req, res, next) => {
                 email: decoded.email,
             };
             res.locals.user = {
-                username : session.user.username,
-                userId: session.user.id,
-                email: session.user.email,
+                username: decoded.username,
+                userId: decoded.id,
+                email: decoded.email,
             };
 
             return next();
         } catch (error) {
             console.log(error);
             res.clearCookie("accessToken");
-            return next();
             //now the access token is not verified either due to it is revoked or mybe tampered 
             
         }
@@ -54,6 +53,8 @@ export const assignUser = async (req, res, next) => {
 
         if (isExpired) {
             await deleteSession(session.id);
+            res.clearCookie("refreshToken");
+            res.clearCookie("accessToken"); 
             return next();
         }
         
@@ -89,6 +90,8 @@ export const assignUser = async (req, res, next) => {
         //refresh token is invalid or expired 
         
         res.clearCookie("refreshToken");
+        res.clearCookie("accessToken");
+
         console.log(error);
         return next();
         
