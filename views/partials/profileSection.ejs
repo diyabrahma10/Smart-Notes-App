@@ -1,15 +1,29 @@
 <div class="relative">
                     <button id="profileBtn" class="flex items-center gap-2">
-                        <img src="/images/avatar.png" class="w-9 h-9 rounded-full border" />
-                        <span class="text-sm font-medium hidden sm:block">Diya</span>
+    
+                        <!-- Letter Avatar -->
+                        <div class="w-9 h-9 rounded-full bg-teal-700 text-white flex items-center justify-center font-semibold">
+                            <%= user?.username?.charAt(0).toUpperCase() || "U" %>
+                        </div>
+
+                        <!-- Capitalized Username -->
+                        <span class="text-sm font-medium hidden sm:block">
+                            <%= user?.username
+                                ? user.username.charAt(0).toUpperCase() + user.username.slice(1)
+                                : "User"
+                            %>
+                        </span>
+
                     </button>
+
 
                     <!-- Dropdown Menu -->
                     <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border overflow-hidden text-sm z-50">
                         <div class="px-4 py-2 border-b">
-                            <p class="font-medium">Diya Brahma</p>
-                            <p class="text-xs text-gray-500">diya@example.com</p>
+                            <p class="font-medium"><%= user.username %></p>
+                            <p class="text-xs text-gray-500"><%= user.email %></p>
                         </div>
+
 
                         <a href="/profile" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
                         <a href="/settings" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
