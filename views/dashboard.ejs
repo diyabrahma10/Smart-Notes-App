@@ -1,22 +1,49 @@
-<%- include('partials/header', { title: 'Dashboard' }) %>
+<%- include('partials/head') %>
 
-<div class="min-h-screen flex bg-gray-100">
-
-    <!-- Sidebar -->
-    <%- include( 'partials/sidebarAllNotes') %>
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
-
-        <!-- Top Navbar -->
-        <%- include("partials/topNavbar") %>
-        <!-- Notes Grid -->
-        <%- include('notesGrid.ejs') %>
-
+<nav class="bg-white shadow-sm border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="text-2xl font-bold text-teal-600">SmartNotes</div>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-600">Hello, <strong><%= user.username %></strong></span>
+                <a href="/logout" class="text-sm text-red-500 hover:text-red-700">Logout</a>
+            </div>
+        </div>
     </div>
-    
-</div>
+</nav>
 
-<!-- Dropdown Script -->
-    <%- include('partials/dropdownScript') %>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">My Notes</h1>
+        <a href="/notes/new" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors flex items-center">
+            <i class="fas fa-plus mr-2"></i> New Note
+        </a>
+    </div>
 
-<%- include('partials/footer') %>
+    <% if (typeof notes !== 'undefined' && notes.length > 0) { %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% notes.forEach(note => { %>
+                <a href="/notes/edit/<%= note.id %>" class="block bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-teal-200 transition-all">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2 truncate"><%= note.title || 'Untitled Note' %></h3>
+                    <p class="text-gray-500 text-sm line-clamp-3">
+                        <%= note.contentText ? note.contentText : 'No content yet...' %>
+                    </p>
+                    <div class="mt-4 text-xs text-gray-400">
+                        Updated <%= new Date(note.updatedAt).toLocaleDateString() %>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-200">
+            <div class="text-gray-400 mb-4">
+                <i class="fas fa-sticky-note text-5xl"></i>
+            </div>
+            <h2 class="text-xl font-medium text-gray-600">You don't have any notes yet.</h2>
+            <p class="text-gray-400 mt-1">Start by creating your first note!</p>
+        </div>
+    <% } %>
+</main>
+
+</body>
+</html>

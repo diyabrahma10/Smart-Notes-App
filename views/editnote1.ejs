@@ -16,12 +16,50 @@
         }}) %>
 
         <!-- Editor Area -->
-        <main class="p-6 flex-1">
+        <main class="p-8 flex-1">
 
-            <!-- Quill Editor -->
-            <div id="editor" class="bg-white rounded-lg shadow p-2 h-112.5"></div>
+            <form id="note-form" action="/notes" method="post" class="max-w-4xl mx-auto space-y-8">
 
-           
+                <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                    <div class="mb-4 text-red-600 bg-red-50 border border-red-100 p-3 rounded">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
+
+                <!-- Title Input -->
+                <div>
+                    <input 
+                        name="title" 
+                        type="text" 
+                        placeholder="Note Title" 
+                        value="<%= typeof title !== 'undefined' ? title : '' %>"
+                        class="w-full text-4xl font-bold text-gray-900 border-none outline-none placeholder-gray-300 focus:ring-0"
+                    >
+                </div>
+
+                <!-- Tag preview placeholder -->
+                <div class="mt-4">
+                    <p class="text-xs text-gray-400 uppercase tracking-wide mb-2">Tags</p>
+                    <div id="generated-tags" class="min-h-[48px] flex flex-wrap gap-2 rounded-lg border border-dashed border-gray-200 bg-gray-50 p-3 text-sm text-gray-500">
+                        <!-- Generated tags will appear here -->
+                    </div>
+                </div>
+
+                <!-- Rich Text Editor -->
+                <div class="bg-white rounded-lg shadow p-4">
+                    <div id="editor" class="min-h-96"></div>
+                </div>
+
+                <!-- Hidden inputs for form submission -->
+                <input type="hidden" name="contentHTML" id="noteHTML">
+                <input type="hidden" name="contentText" id="noteText">
+
+                <div class="pt-6">
+                    <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors">
+                        Save Note
+                    </button>
+                </div>
+            </form>
 
         </main>
 
@@ -35,7 +73,7 @@
 <script>
     const quill = new Quill('#editor', {
         theme: 'snow',
-        placeholder: '  Start Here...',
+        placeholder: 'Start writing your notes here...',
         modules: {
             toolbar: [
                 [{ header: [1, 2, 3, false] }],
@@ -48,28 +86,23 @@
         }
     });
 
-    // Load existing note content (if editing)
-    // if (typeof currentNote !="undefined" && currentNote.contentHTML) {
-    //     quill.root.innerHTML = `< %- currentNote.contentHTML %>`;
-    // } 
+    // If server provided content, initialize the editor with it and preserve hidden inputs
+    const initialHTML = <%- JSON.stringify(typeof contentHTML !== 'undefined' ? contentHTML : '') %>;
+    const initialText = <%- JSON.stringify(typeof contentText !== 'undefined' ? contentText : '') %>;
 
-    // Store HTML and Plain Text
+    if (initialHTML) {
+        quill.root.innerHTML = initialHTML;
+        document.getElementById('noteHTML').value = initialHTML;
+    }
+
+    if (initialText) {
+        document.getElementById('noteText').value = initialText;
+    }
+
+    // Store HTML and Plain Text on text change
     quill.on('text-change', function() {
         document.getElementById("noteHTML").value = quill.root.innerHTML;
         document.getElementById("noteText").value = quill.getText();
-    });
-
-    // Profile dropdown
-    const btn = document.getElementById("profileBtn");
-    const menu = document.getElementById("profileMenu");
-
-    btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        menu.classList.toggle("hidden");
-    });
-
-    document.addEventListener("click", () => {
-        menu.classList.add("hidden");
     });
 </script>
 

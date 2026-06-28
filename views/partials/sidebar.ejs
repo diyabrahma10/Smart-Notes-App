@@ -1,0 +1,33 @@
+<aside class="w-64 bg-white border-r border-gray-100 hidden md:flex flex-col shrink-0">
+    <div class="p-6 mb-4">
+        <a href="/dashboard" class="text-xl font-bold text-teal-600 flex items-center tracking-tight">
+            <i class="fas fa-brain mr-2.5 text-2xl"></i>
+            SmartNotes
+        </a>
+    </div>
+    
+    <nav class="flex-1 px-4 space-y-1">
+        <div class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Navigation</div>
+        <a href="/dashboard" class="flex items-center px-4 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-teal-600 rounded-xl text-sm font-medium transition-all group">
+            <i class="fas fa-home mr-3 text-gray-400 group-hover:text-teal-500"></i> All Notes
+        </a>
+        <a href="#" class="flex items-center px-4 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-teal-600 rounded-xl text-sm font-medium transition-all group">
+            <i class="fas fa-star mr-3 text-gray-400 group-hover:text-teal-500"></i> Favorites
+        </a>
+        <a href="#" class="flex items-center px-4 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-teal-600 rounded-xl text-sm font-medium transition-all group">
+            <i class="fas fa-archive mr-3 text-gray-400 group-hover:text-teal-500"></i> Archive
+        </a>
+    </nav>
+
+    <div class="p-4 border-t border-gray-50">
+        <div class="flex items-center space-x-3 px-4 py-3 bg-gray-50 rounded-2xl">
+            <div class="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                <%= user.username[0].toUpperCase() %>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="text-xs font-bold text-gray-900 truncate"><%= user.username %></p>
+                <a href="/logout" class="text-[10px] text-gray-400 hover:text-red-500 transition-colors uppercase font-bold tracking-tighter">Sign out</a>
+            </div>
+        </div>
+    </div>
+</aside>

@@ -7,6 +7,7 @@ import { loginRouter } from "./routers/auth.routes/login.route.js";
 import cookieParser from "cookie-parser";
 import { dashRouter } from "./routers/dashboard.route.js";
 import { assignUser, requireAuth } from "./middlewares/authenticate.middleware.js";
+import { notesRouter } from "./routers/notes.route.js";
 
 
 
@@ -48,6 +49,7 @@ app.get("/", (req, res) => {
 app.use('/', registerRouter);
 app.use('/', loginRouter);
 app.use('/dashboard',requireAuth, dashRouter);
+app.use('/notes', requireAuth, notesRouter );
 
 app.listen(3000, () => {
     console.log(`Server running on http://localhost:${3000}`);
