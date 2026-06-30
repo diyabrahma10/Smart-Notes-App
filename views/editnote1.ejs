@@ -11,14 +11,24 @@
     <div class="flex-1 flex flex-col">
 
         <!-- Top Navbar -->
-        <%- include('partials/topNavbarEditNotes', {currentNote : {
-            title : "hello guys"
-        }}) %>
+        <%- include('partials/topNavbarEditNotes', {
+      currentNote: { title: "hello guys" },
+      currentNoteId: typeof currentNoteId !== 'undefined' ? currentNoteId : null,
+    }) %>
+
+    <% if (typeof currentNoteId !== 'undefined' && currentNoteId) { %>
+      <form id="delete-note-form" action="/notes/<%= currentNoteId %>/delete" method="post"></form>
+    <% } %>
+
+    <div class="max-w-4xl mx-auto px-8 mt-4">
+      <%- include('partials/successMessage') %>
+      <%- include('partials/errorMessage') %>
+    </div>
 
         <!-- Editor Area -->
         <main class="p-8 flex-1">
 
-            <form id="note-form" action="/notes" method="post" class="max-w-4xl mx-auto space-y-8">
+            <form id="note-form" action="/notes<%= typeof currentNoteId !== 'undefined' && currentNoteId ? '/' + currentNoteId : '' %>" method="post" class="max-w-4xl mx-auto space-y-8">
 
                 <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
                     <div class="mb-4 text-red-600 bg-red-50 border border-red-100 p-3 rounded">
@@ -28,33 +38,47 @@
 
                 <!-- Title Input -->
                 <div>
-                    <input 
+                        <input 
                         name="title" 
                         type="text" 
                         placeholder="Note Title" 
                         value="<%= typeof title !== 'undefined' ? title : '' %>"
-                        class="w-full text-4xl font-bold text-gray-900 border-none outline-none placeholder-gray-300 focus:ring-0"
+                        class="w-full text-5xl md:text-6xl font-extrabold text-gray-900 border-none outline-none placeholder-gray-300 focus:ring-0"
                     >
                 </div>
 
-                <!-- Tag preview placeholder -->
+                <% if (typeof tags !== 'undefined' && tags.length > 0) { %>
+                <!-- Tag preview -->
                 <div class="mt-4">
                     <p class="text-xs text-gray-400 uppercase tracking-wide mb-2">Tags</p>
-                    <div id="generated-tags" class="min-h-[48px] flex flex-wrap gap-2 rounded-lg border border-dashed border-gray-200 bg-gray-50 p-3 text-sm text-gray-500">
-                        <!-- Generated tags will appear here -->
+                    <div id="generated-tags" class="flex flex-wrap gap-2 rounded-lg border border-dashed border-gray-200 bg-gray-50 p-3 text-sm text-gray-500">
+                        <% tags.forEach(tag => { %>
+                            <span class="px-2 py-1 bg-teal-100 text-teal-800 rounded-full"><%= tag %></span>
+                        <% }) %>
                     </div>
                 </div>
+                <% } %>
 
                 <!-- Rich Text Editor -->
                 <div class="bg-white rounded-lg shadow p-4">
-                    <div id="editor" class="min-h-96"></div>
+                    <div id="editor" class="min-h-[70vh]" style="min-height: 70vh;"></div>
                 </div>
 
                 <!-- Hidden inputs for form submission -->
                 <input type="hidden" name="contentHTML" id="noteHTML">
                 <input type="hidden" name="contentText" id="noteText">
+                <input type="hidden" name="currentNoteId" id="currentNoteId" value="<%= currentNoteId || '' %>">
+                <textarea id="initialHTML" hidden><%- typeof contentHTML !== 'undefined' ? contentHTML : '' %></textarea>
+                <textarea id="initialText" hidden><%= typeof contentText !== 'undefined' ? contentText : '' %></textarea>
 
-                <div class="pt-6">
+                <div class="pt-6 flex items-center gap-3">
+                    <% if (typeof currentNoteId !== 'undefined' && currentNoteId) { %>
+                        <form id="delete-note-form-bottom" action="/notes/<%= currentNoteId %>/delete" method="post" class="m-0">
+                            <button type="submit" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors">
+                                Delete Note
+                            </button>
+                        </form>
+                    <% } %>
                     <button type="submit" class="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors">
                         Save Note
                     </button>
@@ -87,8 +111,8 @@
     });
 
     // If server provided content, initialize the editor with it and preserve hidden inputs
-    const initialHTML = <%- JSON.stringify(typeof contentHTML !== 'undefined' ? contentHTML : '') %>;
-    const initialText = <%- JSON.stringify(typeof contentText !== 'undefined' ? contentText : '') %>;
+    const initialHTML = document.getElementById('initialHTML').value;
+    const initialText = document.getElementById('initialText').value;
 
     if (initialHTML) {
         quill.root.innerHTML = initialHTML;

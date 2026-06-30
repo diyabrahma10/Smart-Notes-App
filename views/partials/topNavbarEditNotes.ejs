@@ -15,21 +15,21 @@
       </div>
       <div class="h-8 w-[1px] bg-gray-100 mx-2"></div>
       
-      <button 
-        form="note-form"
-        type="submit"
-        name="action"
-        value="delete"
-        class="text-gray-400 hover:text-red-500 p-2 transition-colors"
-      >
-        <i class="far fa-trash-alt"></i>
-      </button>
+      <% if (typeof currentNoteId !== 'undefined' && currentNoteId) { %>
+        <button 
+          form="delete-note-form"
+          type="submit"
+          class="bg-red-600 text-white hover:bg-red-700 border border-red-600 px-3 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center"
+        >
+          <i class="far fa-trash-alt mr-2"></i> Delete
+        </button>
+      <% } %>
       <button
         form="note-form"
         type="submit"
         name="action"
         value="save"
-        class="bg-teal-600 text-white px-6 py-2 rounded-xl text-xs font-bold hover:bg-teal-700 shadow-sm hover:shadow-teal-100 transition-all flex items-center whitespace-nowrap"
+        class="bg-red-600 text-white hover:bg-red-700 border border-red-600 px-6 py-2 rounded-lg text-sm font-semibold shadow-sm transition-all flex items-center whitespace-nowrap"
       >
         <i class="fas fa-save mr-2"></i> Save Changes
       </button>

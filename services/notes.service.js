@@ -5,6 +5,7 @@ export const listNotesByUserId = async ({ user_id, page, limit, search }) => {
   const whereClause = {
     userId: user_id,
     isArchived: false,
+    isDeleted: false,
     ...(search && {
       OR: [
         {
@@ -132,6 +133,54 @@ export const listTagNames = async (user_id) => {
   return await prisma.tag.findMany({
     where: {
       userId: user_id,
+    },
+  });
+};
+
+export const listNoteByNoteId = async ({ user_id, note_id }) => {
+  return await prisma.note.findFirst({
+    where: {
+      id: note_id,
+      userId: user_id,
+      isArchived: false,
+    },
+    include: {
+      tags: {
+        include: { tag: true },
+      },
+    },
+  });
+};
+
+export const updateNote = async ({
+  user_id,
+  note_id,
+  title,
+  contentHTML,
+  contentText,
+}) => {
+  return prisma.note.updateMany({
+    where: {
+      id: note_id,
+      userId: user_id,
+      isArchived: false,
+    },
+    data: {
+      title,
+      contentHTML,
+      contentText,
+    },
+  });
+};
+
+export const deleteNoteByNoteId = async ({ user_id, note_id }) => {
+  return prisma.note.updateMany({
+    where: {
+      id: note_id,
+      userId: user_id,
+    },
+    data: {
+      isDeleted: true,
     },
   });
 };

@@ -20,18 +20,33 @@
         </a>
     </div>
 
+    <div class="max-w-7xl mx-auto mb-6">
+      <%- include('partials/successMessage') %>
+      <%- include('partials/errorMessage') %>
+    </div>
+
     <% if (typeof notes !== 'undefined' && notes.length > 0) { %>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <% notes.forEach(note => { %>
-                <a href="/notes/edit/<%= note.id %>" class="block bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-teal-200 transition-all">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2 truncate"><%= note.title || 'Untitled Note' %></h3>
-                    <p class="text-gray-500 text-sm line-clamp-3">
+                <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-200 hover:shadow-2xl transition-all">
+                    <div class="flex justify-between items-start gap-4">
+                        <a href="/notes/<%= note.id %>" class="text-xl font-semibold text-gray-900 mb-2 truncate block w-full hover:text-teal-600 transition-colors">
+                            <%= note.title || 'Untitled Note' %>
+                        </a>
+                        <form action="/notes/<%= note.id %>/delete" method="post" class="shrink-0">
+                            <button type="submit" class="bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition-colors">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-6 mt-3 line-clamp-4">
                         <%= note.contentText ? note.contentText : 'No content yet...' %>
                     </p>
-                    <div class="mt-4 text-xs text-gray-400">
-                        Updated <%= new Date(note.updatedAt).toLocaleDateString() %>
+                    <div class="mt-5 flex items-center justify-between text-xs text-gray-400">
+                        <span>Updated <%= new Date(note.updatedAt).toLocaleDateString() %></span>
+                        <span><%= note.tags?.length ? note.tags.length + ' tags' : '' %></span>
                     </div>
-                </a>
+                </div>
             <% }) %>
         </div>
     <% } else { %>
